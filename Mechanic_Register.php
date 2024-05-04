@@ -6,13 +6,16 @@ include "./Connect.php";
 if (isset($_POST['Submit'])) {
 
     $name = $_POST['name'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
     $password = $_POST['password'];
-    $specialization_id = $_POST['specialization_id'];
-    $location = $_POST['location'];
+    $specalization_id = $_POST['specalization_id'];
+    $location_id = $_POST['location_id'];
+    $type = 'MICHANIC';
 
-    $stmt = $con->prepare("INSERT INTO mechanices (name, password, specialization_id, location) VALUES (?, ?, ?, ?) ");
+    $stmt = $con->prepare("INSERT INTO users (specalization_id, location_id, name, email, phone, password, type) VALUES (?, ?, ?, ?, ?, ?, ?) ");
 
-    $stmt->bind_param("ssis", $name, $password, $specialization_id, $location);
+    $stmt->bind_param("iisssss", $specalization_id, $location_id, $name, $email, $phone, $password, $type);
 
     if ($stmt->execute()) {
 
@@ -121,6 +124,36 @@ if (isset($_POST['Submit'])) {
                       </div>
 
                       <div class="col-12">
+                        <label for="name" class="form-label"> Email</label>
+                        <div class="input-group has-validation">
+
+                          <input
+                            type="email"
+                            name="email"
+                            class="form-control"
+                            id="name"
+                            required
+                          />
+
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <label for="name" class="form-label"> Phone</label>
+                        <div class="input-group has-validation">
+
+                          <input
+                            type="text"
+                            name="phone"
+                            class="form-control"
+                            id="name"
+                            required
+                          />
+
+                        </div>
+                      </div>
+
+                      <div class="col-12">
                         <label for="yourPassword" class="form-label"
                           >Password</label
                         >
@@ -140,14 +173,14 @@ if (isset($_POST['Submit'])) {
                       <label for="specializationId" class="form-label"
                           >Select Specialization</label
                         >
-                        <select name="specialization_id" class="form-select" id="specialization_id" required>
+                        <select name="specalization_id" class="form-select" id="specialization_id" required>
                           <?php
-$sql1 = mysqli_query($con, "SELECT * from specializations WHERE active = 1 ORDER BY id DESC");
+$sql1 = mysqli_query($con, "SELECT * from specliazations WHERE active = 1 ORDER BY id DESC");
 
 while ($row1 = mysqli_fetch_array($sql1)) {
 
     $specialization_id = $row1['id'];
-    $specialization = $row1['specialization'];
+    $specialization = $row1['name'];
     ?>
                             <option value="<?php echo $specialization_id ?>"><?php echo $specialization ?></option>
 
@@ -160,11 +193,20 @@ while ($row1 = mysqli_fetch_array($sql1)) {
                       <label for="locationId" class="form-label"
                           >Select Location</label
                         >
-                        <select name="location" class="form-select" id="locationId" required>
-                            <option value="location 1">location 1</option>
-                            <option value="location 2">location 2</option>
-                            <option value="location 3">location 3</option>
-                            <option value="location 3">location 3</option>
+                        <select name="location_id" class="form-select" id="locationId" required>
+
+                        <?php
+$sql1 = mysqli_query($con, "SELECT * from locations ORDER BY id DESC");
+
+while ($row1 = mysqli_fetch_array($sql1)) {
+
+    $location_id = $row1['id'];
+    $name = $row1['name'];
+    ?>
+                            <option value="<?php echo $location_id ?>"><?php echo $name ?></option>
+
+                            <?php
+}?>
                         </select>
                       </div>
 

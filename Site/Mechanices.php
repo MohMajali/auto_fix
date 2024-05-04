@@ -73,7 +73,7 @@ if ($C_ID) {
                         <li class=""><a href="Appointements.php">Appointements</a></li>
                         <li class=""><a href="Account.php">Account</a></li>
                         <?php } else {?>
-                          <li><a href="../Login.php">Login</a></li>
+                          <li><a href="../User_Login.php">Login</a></li>
 
                           <?php }?>
                         <li class=""><a href="contact.php">Contact</a></li>
@@ -143,9 +143,9 @@ if ($C_ID) {
 
 if ($specialization_id) {
 
-    $sql1 = mysqli_query($con, "SELECT * from mechanices WHERE specialization_id = '$specialization_id' ORDER BY id DESC");
+    $sql1 = mysqli_query($con, "SELECT * from users WHERE type = 'MICHANIC' AND specialization_id = '$specialization_id' ORDER BY id DESC");
 } else {
-    $sql1 = mysqli_query($con, "SELECT * from mechanices ORDER BY id DESC");
+    $sql1 = mysqli_query($con, "SELECT * from users WHERE type = 'MICHANIC' ORDER BY id DESC");
 
 }
 

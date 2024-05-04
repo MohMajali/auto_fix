@@ -8,12 +8,12 @@ $M_ID = $_SESSION['M_Log'];
 if (!$M_ID) {
 
     echo '<script language="JavaScript">
-     document.location="../Mechanic_Login.php";
+     document.location="../Admin_Login.php";
     </script>';
 
 } else {
 
-    $sql1 = mysqli_query($con, "select * from mechanices where id='$M_ID'");
+    $sql1 = mysqli_query($con, "select * from users where id='$M_ID'");
     $row1 = mysqli_fetch_array($sql1);
 
     $name = $row1['name'];

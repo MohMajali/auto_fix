@@ -3,21 +3,50 @@ session_start();
 
 include "../Connect.php";
 
-$M_ID = $_SESSION['M_Log'];
+$A_ID = $_SESSION['A_Log'];
+$speclization_id = $_GET['speclization_id'];
 
-if (!$M_ID) {
+if (!$A_ID) {
 
     echo '<script language="JavaScript">
-     document.location="../Mechanic_Login.php";
+     document.location="./Adminlogin.php";
     </script>';
 
 } else {
 
-    $sql1 = mysqli_query($con, "select * from users where id='$M_ID'");
+    $sql1 = mysqli_query($con, "select * from users where id='$A_ID'");
     $row1 = mysqli_fetch_array($sql1);
 
     $name = $row1['name'];
     $email = $row1['email'];
+
+    $sql2 = mysqli_query($con, "select * from specliazations where id='$speclization_id'");
+    $row2 = mysqli_fetch_array($sql2);
+
+    $spec_name = $row2['name'];
+
+    if (isset($_POST['Submit'])) {
+
+        $speclization_id = $_POST['speclization_id'];
+        $name = $_POST['name'];
+
+        $stmt = $con->prepare("UPDATE specliazations SET name = ? WHERE id = ? ");
+
+        $stmt->bind_param("si", $name, $speclization_id);
+
+        if ($stmt->execute()) {
+
+            echo "<script language='JavaScript'>
+              alert ('Speclization Has Been Updated Successfully !');
+         </script>";
+
+            echo "<script language='JavaScript'>
+        document.location='./Speclizations.php';
+           </script>";
+
+        }
+
+    }
 }
 
 ?>
@@ -28,7 +57,7 @@ if (!$M_ID) {
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>Reviews - Auto Fix</title>
+    <title>Scooter - AutoFix</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
 
@@ -120,102 +149,48 @@ if (!$M_ID) {
 
     <main id="main" class="main">
       <div class="pagetitle">
-        <h1>Reviews</h1>
+        <h1>Speclization</h1>
         <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item">Reviews</li>
+            <li class="breadcrumb-item">Speclization</li>
           </ol>
         </nav>
       </div>
       <!-- End Page Title -->
       <section class="section">
-
-
-      <div class="modal fade" id="verticalycentered" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Contact Message</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-
-                <form method="POST" action="./Categories.php" enctype="multipart/form-data">
-
-
-                  <div class="row mb-3">
-
-                    <div class="col-sm-12">
-                      <!-- <input type="file" name="file" class="form-control" required/> -->
-                      <textarea id="text-area-contact" name="" class="form-control" id="" cols="30" rows="10"></textarea>
-                    </div>
-                  </div>
-
-
-                </form>
-
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <!-- Table with stripped rows -->
-                <table class="table datatable">
-                  <thead>
-                    <tr>
-                      <th scope="col">ID</th>
-                      <th scope="col">User Name</th>
-                      <th scope="col">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  <?php
-$sql1 = mysqli_query($con, "SELECT * from reviewes WHERE mechanic_id = '$M_ID' ORDER BY id DESC");
+                <h5 class="card-title"></h5>
 
-while ($row1 = mysqli_fetch_array($sql1)) {
+                <!-- Horizontal Form -->
+                <form method="POST" action="./Edit-Speclization.php?speclization_id=<?php echo $speclization_id ?>" enctype="multipart/form-data">
 
-    $review_id = $row1['id'];
-    $customer_id = $row1['customer_id'];
-    $review = $row1['review'];
+                <input type="hidden" name="speclization_id" value="<?php echo $speclization_id ?>">
 
-    $sql2 = mysqli_query($con, "SELECT * from users WHERE id = '$customer_id'");
-    $row2 = mysqli_fetch_array($sql2);
+                  <div class="row mb-3">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label"
+                      >Name</label
+                    >
+                    <div class="col-sm-10">
+                      <input type="text" name="name" value="<?php echo $spec_name ?>" class="form-control" id="inputText" />
+                    </div>
+                  </div>
 
-    $user_name = $row2['name'];
 
-    ?>
-                    <tr>
-                      <th scope="row"><?php echo $review_id ?></th>
-                      <td><?php echo $user_name ?></td>
-                      <td>
-                      <button onclick="onClick(event)" type="button" id="button-<?php echo $review ?>" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#verticalycentered">View Comment</button>
 
-                      </td>
-                    </tr>
-<?php
-}?>
-                  </tbody>
-                </table>
-                <!-- End Table with stripped rows -->
+                  <div class="text-end">
+                    <button type="submit" name="Submit" class="btn btn-primary">
+                      Submit
+                    </button>
+                    <button type="reset" class="btn btn-secondary">
+                      Reset
+                    </button>
+                  </div>
+                </form>
+                <!-- End Horizontal Form -->
               </div>
             </div>
           </div>
@@ -227,7 +202,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
       <div class="copyright">
-        &copy; Copyright <strong><span>Auto Fix</span></strong
+        &copy; Copyright <strong><span>AutoFix</span></strong
         >. All Rights Reserved
       </div>
     </footer>
@@ -254,12 +229,6 @@ while ($row1 = mysqli_fetch_array($sql1)) {
     <script src="../assets/vendor/simple-datatables/simple-datatables.js"></script>
     <script src="../assets/vendor/tinymce/tinymce.min.js"></script>
     <script src="../assets/vendor/php-email-form/validate.js"></script>
-
-    <script>
-              const onClick = (e) => {
-            document.getElementById('text-area-contact').value = e.target.id.split('-')[1]
-        }
-    </script>
 
     <!-- Template Main JS File -->
     <script src="../assets/js/main.js"></script>

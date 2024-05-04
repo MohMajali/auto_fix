@@ -3,43 +3,22 @@ session_start();
 
 include "../Connect.php";
 
-$M_ID = $_SESSION['M_Log'];
-
-if (!$M_ID) {
+$A_ID = $_SESSION['A_Log'];
+if (!$A_ID) {
 
     echo '<script language="JavaScript">
-     document.location="../Mechanic_Login.php";
+     document.location="./Adminlogin.php";
     </script>';
 
 } else {
 
-    $sql1 = mysqli_query($con, "select * from users where id='$M_ID'");
+    $sql1 = mysqli_query($con, "select * from users where id='$A_ID'");
     $row1 = mysqli_fetch_array($sql1);
 
     $name = $row1['name'];
-
-    if (isset($_POST['Submit'])) {
-
-        $app_id = $_POST['appointment_id'];
-        $price = $_POST['price'];
-
-        $stmt = $con->prepare("UPDATE appointmentes SET price = ? WHERE id = ?");
-
-        $stmt->bind_param("di", $price, $app_id);
-
-        if ($stmt->execute()) {
-
-            echo "<script language='JavaScript'>
-              alert ('Price Updated Successfully !');
-         </script>";
-
-            echo "<script language='JavaScript'>
-        document.location='./Appointmentes.php';
-           </script>";
-
-        }
-    }
+    $email = $row1['email'];
 }
+
 ?>
 
 
@@ -49,7 +28,7 @@ if (!$M_ID) {
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>Appointmentes - Auto Fix</title>
+    <title>Mechanics - Electirc Scooters</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
 
@@ -108,8 +87,25 @@ if (!$M_ID) {
                 alt="Profile"
                 class="rounded-circle"
               />
-              <span class="d-none d-md-block ps-2"><?php echo $name ?></span> </a
-            ><!-- End Profile Iamge Icon -->
+              <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $name ?></span> </a
+            >
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6><?php echo $name ?></h6>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="./Logout.php">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul>
           </li>
           <!-- End Profile Nav -->
         </ul>
@@ -124,76 +120,16 @@ if (!$M_ID) {
 
     <main id="main" class="main">
       <div class="pagetitle">
-        <h1>Appointmentes</h1>
+        <h1>Mechanics</h1>
         <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item">Appointmentes</li>
+            <li class="breadcrumb-item">Mechanics</li>
           </ol>
         </nav>
       </div>
       <!-- End Page Title -->
       <section class="section">
-
-
-
-
-
-
-
-      <div class="modal fade" id="verticalycentered" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Price</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-
-                <form method="POST" action="./Appointmentes.php" enctype="multipart/form-data">
-
-                <input type="hidden" name="appointment_id" id="appointment_id">
-
-                  <div class="row mb-3">
-                    <label for="inputText" class="col-sm-4 col-form-label"
-                      >Price</label
-                    >
-                    <div class="col-sm-8">
-                      <input type="number" name="price" class="form-control" />
-                    </div>
-                  </div>
-
-
-
-                  <div class="row mb-3">
-                    <div class="text-end">
-                      <button type="submit" name="Submit" class="btn btn-primary">
-                        Submit
-                      </button>
-                    </div>
-                  </div>
-                </form>
-
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
 
 
 
@@ -206,76 +142,52 @@ if (!$M_ID) {
                   <thead>
                     <tr>
                       <th scope="col">ID</th>
-                      <th scope="col">User Name</th>
-                      <th scope="col">Date</th>
-                      <th scope="col">Time</th>
-                      <th scope="col">Price</th>
-                      <th scope="col">Status</th>
+                      <th scope="col">Mechanics Name</th>
+                      <th scope="col">Mechanics Email</th>
+                      <th scope="col">Mechanics Phone</th>
+                      <th scope="col">Mechanics Rate</th>
                       <th scope="col">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
 <?php
-$sql1 = mysqli_query($con, "SELECT * from appointmentes WHERE mechanic_id = '$M_ID' ORDER BY id DESC");
+$sql1 = mysqli_query($con, "SELECT * from users WHERE type = 'MICHANIC' ORDER BY id DESC");
 
 while ($row1 = mysqli_fetch_array($sql1)) {
 
-    $appointment_id = $row1['id'];
-    $customer_id = $row1['customer_id'];
-    $date = $row1['date'];
-    $time = $row1['time'];
-    $status = $row1['status'];
-    $price = $row1['price'];
-
-    $sql2 = mysqli_query($con, "SELECT * from users WHERE id = '$customer_id'");
-    $row2 = mysqli_fetch_array($sql2);
-
-    $user_name = $row2['name'];
+    $mechanic_id = $row1['id'];
+    $mechanic_name = $row1['name'];
+    $mechanic_phone = $row1['phone'];
+    $mechanic_email = $row1['email'];
+    $mechanic_total_rate = $row1['total_rate'];
+    $active = $row1['active'];
 
     ?>
                     <tr>
-                      <th scope="row"><?php echo $appointment_id ?></th>
-                      <td><?php echo $user_name ?></td>
-                      <td><?php echo $date ?></td>
-                      <td><?php echo $time ?></td>
-                      <td><?php
+                      <th scope="row"><?php echo $mechanic_id ?></th>
+                      <td><?php echo $mechanic_name ?></td>
+                      <td><?php echo $mechanic_email ?></td>
+                      <td><?php echo $mechanic_phone ?></td>
+                      <td><?php echo $mechanic_total_rate ?></td>
 
-    if ($price) {
-        echo $price . 'JDs';
-    }
 
-    ?> </td>
-                      <td><?php echo $status ?></td>
 
                       <td>
 
-                      <?php
-if ($status == 'PENDING') {?>
+                          <?php if ($active == 1) {?>
 
-                      <a href="./AcceptOrRejectAppointement.php?appointment_id=<?php echo $appointment_id ?>&&status=Accepted" class="btn btn-primary">Accept</a>
+                            <a href="./DeleteOrRestoreMechanic.php?mechanic_id=<?php echo $mechanic_id ?>&&isActive=<?php echo 0 ?>" class="btn btn-danger">Delete</a>
 
-                      <a href="./AcceptOrRejectAppointement.php?appointment_id=<?php echo $appointment_id ?>&&status=Rejected" class="btn btn-danger">Reject</a>
-                      <?php } else if ($status == 'Accepted') {?>
+                            <?php } else {?>
 
-                        <!-- <a href="./AcceptOrRejectAppointement.php?appointment_id=<?php echo $appointment_id ?>&&status=Rejected" class="btn btn-primary">Add Price</a> -->
-                        <button
+                              <a href="./DeleteOrRestoreMechanic.php?mechanic_id=<?php echo $mechanic_id ?>&&isActive=<?php echo 1 ?>" class="btn btn-primary">Restore</a>
 
-                        type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#verticalycentered"
-            id="btn-<?php echo $appointment_id ?>"
-            onclick="onClick(event)"
+                          <?php }?>
 
-                        >Add Price</button>
-
-                        <?php }?>
                       </td>
 
-
                     </tr>
-<?php
-}?>
+<?php }?>
                   </tbody>
                 </table>
                 <!-- End Table with stripped rows -->
@@ -290,7 +202,7 @@ if ($status == 'PENDING') {?>
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
       <div class="copyright">
-        &copy; Copyright <strong><span>Auto Fix</span></strong
+        &copy; Copyright <strong><span>Electirc Scooters</span></strong
         >. All Rights Reserved
       </div>
     </footer>
@@ -320,14 +232,5 @@ if ($status == 'PENDING') {?>
 
     <!-- Template Main JS File -->
     <script src="../assets/js/main.js"></script>
-
-
-    <script>
-
-      const onClick = (e) => {
-        document.getElementById('appointment_id').value = e.target.id.split('-')[1]
-      }
-    </script>
-
   </body>
 </html>

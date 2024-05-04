@@ -13,22 +13,25 @@ if (!$M_ID) {
 
 } else {
 
-    $sql1 = mysqli_query($con, "select * from mechanices where id='$M_ID'");
+    $sql1 = mysqli_query($con, "select * from users where id='$M_ID'");
     $row1 = mysqli_fetch_array($sql1);
 
     $name = $row1['name'];
+    $email = $row1['email'];
+    $phone = $row1['phone'];
     $password = $row1['password'];
-
 
     if (isset($_POST['Submit'])) {
 
         $M_ID = $_POST['M_ID'];
         $name = $_POST['name'];
+        $email = $_POST['email'];
+        $phone = $_POST['phone'];
         $password = $_POST['password'];
 
-        $stmt = $con->prepare("UPDATE mechanices SET name = ?, password = ? WHERE id = ? ");
+        $stmt = $con->prepare("UPDATE users SET name = ?, password = ?, email = ?, phone = ? WHERE id = ? ");
 
-        $stmt->bind_param("ssi", $name, $password, $M_ID);
+        $stmt->bind_param("ssssi", $name, $password, $email, $phone, $M_ID);
 
         if ($stmt->execute()) {
 
@@ -172,6 +175,24 @@ if (!$M_ID) {
                     >
                     <div class="col-sm-10">
                       <input type="text" name="name" value="<?php echo $name ?>" class="form-control" id="inputText" />
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label"
+                      > Phone</label
+                    >
+                    <div class="col-sm-10">
+                      <input type="text" name="phone" value="<?php echo $phone ?>" class="form-control" id="inputText" />
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label"
+                      >Email </label
+                    >
+                    <div class="col-sm-10">
+                      <input type="email" name="email" value="<?php echo $email ?>" class="form-control" id="inputText" />
                     </div>
                   </div>
 

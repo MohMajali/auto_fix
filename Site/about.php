@@ -72,7 +72,7 @@ if ($C_ID) {
                         <li><a href="Appointements.php">Appointements</a></li>
                         <li><a href="Account.php">Account</a></li>
                         <?php } else {?>
-                          <li><a href="../Login.php">Login</a></li>
+                          <li><a href="../User_Login.php">Login</a></li>
 
                           <?php }?>
                         <li><a href="contact.php">Contact</a></li>

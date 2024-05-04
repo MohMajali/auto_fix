@@ -72,7 +72,7 @@ if ($C_ID) {
                         <li><a href="Appointements.php">Appointements</a></li>
                         <li><a href="Account.php">Account</a></li>
                         <?php } else {?>
-                          <li><a href="../Login.php">Login</a></li>
+                          <li><a href="../User_Login.php">Login</a></li>
 
                           <?php }?>
                         <li><a href="contact.php">Contact</a></li>
@@ -138,24 +138,21 @@ if ($C_ID) {
 
 
         <?php
-$sql1 = mysqli_query($con, "SELECT * from mechanices ORDER BY id DESC");
+$sql1 = mysqli_query($con, "SELECT * from users WHERE type = 'MICHANIC' ORDER BY id DESC");
 
 while ($row1 = mysqli_fetch_array($sql1)) {
 
     $mechanic_id = $row1['id'];
     $name = $row1['name'];
+    $total_rate = $row1['total_rate'];
 
-    $sql2 = mysqli_query($con, "SELECT * from reviewes WHERE mechanic_id = '$mechanic_id'");
-    $row2 = mysqli_fetch_array($sql2);
-
-    $rating = $row2['rating'];
 
     ?>
           <div class="col-lg-3 col-md-6 visit mb-3" data-aos="fade-right">
             <a href="./Make-Appointement.php?mechanic_id=<?php echo $mechanic_id ?>"><img src="./img/mechanices.jpeg" alt="Image placeholder" class="img-fluid"> </a>
             <h3><a href="./Make-Appointement.php?mechanic_id=<?php echo $mechanic_id ?>"><?php echo $name ?></a></h3>
             <div class="reviews-star float-left">
-              <?php for ($i = 0; $i < $rating; $i++) {?>
+              <?php for ($i = 0; $i < $total_rate; $i++) {?>
                 <span class="ion-android-star"></span>
               <?php }?>
             </div>
@@ -180,12 +177,12 @@ while ($row1 = mysqli_fetch_array($sql1)) {
         </div>
         <div class="row">
         <?php
-$sql1 = mysqli_query($con, "SELECT * from specializations WHERE active = 1 ORDER BY id DESC");
+$sql1 = mysqli_query($con, "SELECT * from specliazations WHERE active = 1 ORDER BY id DESC");
 
 while ($row1 = mysqli_fetch_array($sql1)) {
 
     $specialization_id = $row1['id'];
-    $specialization = $row1['specialization'];
+    $specialization = $row1['name'];
 
     ?>
           <div class="col-lg-4 col-md-6 col-sm-6 col-12 post" data-aos="fade-up" data-aos-delay="100">
@@ -205,55 +202,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
 
 
 
-    <!-- END section -->
-    <section class="section testimonial-section">
-      <div class="container">
-        <div class="row justify-content-center text-center mb-5">
-          <div class="col-md-8">
-            <h2 class="heading" data-aos="fade-up">Testimonial</h2>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-            <div class="testimonial text-center">
-              <div class="author-image mb-3">
-                <img src="img/person_1.jpg" alt="Image placeholder" class="rounded-circle">
-              </div>
-              <blockquote>
 
-                <p>&ldquo;This website is awesome.&rdquo;</p>
-              </blockquote>
-              <p><em>&mdash; XXXXXXXXXXXXXXXXXXXXXXXXXXX</em></p>
-
-            </div>
-          </div>
-          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-            <div class="testimonial text-center">
-              <div class="author-image mb-3">
-                <img src="img/person_2.jpg" alt="Image placeholder" class="rounded-circle">
-              </div>
-              <blockquote>
-                <p>&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. In dolor, iusto doloremque quo odio repudiandae sunt eveniet? Enim facilis laborum voluptate id porro, culpa maiores quis, blanditiis laboriosam alias&rdquo;</p>
-              </blockquote>
-              <p><em>&mdash; John Doe</em></p>
-            </div>
-          </div>
-
-          <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-            <div class="testimonial text-center">
-              <div class="author-image mb-3">
-                <img src="img/person_3.jpg" alt="Image placeholder" class="rounded-circle">
-              </div>
-              <blockquote>
-
-                <p>&ldquo;Nostrum, alias, provident magnam sit blanditiis laboriosam unde quaerat, at ipsam, ratione maiores saepe nisi modi corporis quas! Beatae quam, quod aspernatur debitis nesciunt quasi porro ea iste nobis aliquid perspiciatis nostrum culpa impedit aut, iure blanditiis itaque similique sunt!&rdquo;</p>
-              </blockquote>
-              <p><em>&mdash; John Doe</em></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <?php include './Footer.php';?>
 

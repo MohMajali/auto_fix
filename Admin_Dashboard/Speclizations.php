@@ -3,45 +3,46 @@ session_start();
 
 include "../Connect.php";
 
-$M_ID = $_SESSION['M_Log'];
+$A_ID = $_SESSION['A_Log'];
 
-if (!$M_ID) {
+if (!$A_ID) {
 
     echo '<script language="JavaScript">
-     document.location="../Mechanic_Login.php";
+     document.location="../User_Login.php";
     </script>';
 
 } else {
 
-    $sql1 = mysqli_query($con, "select * from users where id='$M_ID'");
+    $sql1 = mysqli_query($con, "select * from users where id='$A_ID'");
     $row1 = mysqli_fetch_array($sql1);
 
     $name = $row1['name'];
+    $email = $row1['email'];
 
     if (isset($_POST['Submit'])) {
 
-        $app_id = $_POST['appointment_id'];
-        $price = $_POST['price'];
+        $name = $_POST['name'];
 
-        $stmt = $con->prepare("UPDATE appointmentes SET price = ? WHERE id = ?");
+        $stmt = $con->prepare("INSERT INTO specliazations (name) VALUES (?) ");
 
-        $stmt->bind_param("di", $price, $app_id);
+        $stmt->bind_param("s", $name);
 
         if ($stmt->execute()) {
 
             echo "<script language='JavaScript'>
-              alert ('Price Updated Successfully !');
-         </script>";
-
-            echo "<script language='JavaScript'>
-        document.location='./Appointmentes.php';
+                alert ('A New Spelication Has Been Added Successfully !');
            </script>";
 
+            echo "<script language='JavaScript'>
+          document.location='./Speclizations.php';
+             </script>";
+
         }
+
     }
 }
-?>
 
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +50,7 @@ if (!$M_ID) {
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>Appointmentes - Auto Fix</title>
+    <title>Specializations - AutoFix</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
 
@@ -108,8 +109,25 @@ if (!$M_ID) {
                 alt="Profile"
                 class="rounded-circle"
               />
-              <span class="d-none d-md-block ps-2"><?php echo $name ?></span> </a
-            ><!-- End Profile Iamge Icon -->
+              <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $name ?></span> </a
+            >
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6><?php echo $name ?></h6>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="./Logout.php">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul>
           </li>
           <!-- End Profile Nav -->
         </ul>
@@ -124,28 +142,32 @@ if (!$M_ID) {
 
     <main id="main" class="main">
       <div class="pagetitle">
-        <h1>Appointmentes</h1>
+        <h1>Specializations</h1>
         <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item">Appointmentes</li>
+            <li class="breadcrumb-item">Specializations</li>
           </ol>
         </nav>
       </div>
       <!-- End Page Title -->
       <section class="section">
+        <div class="mb-3">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#verticalycentered"
+          >
+            Add New Specialization
+          </button>
+        </div>
 
-
-
-
-
-
-
-      <div class="modal fade" id="verticalycentered" tabindex="-1">
+        <div class="modal fade" id="verticalycentered" tabindex="-1">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Price</h5>
+                <h5 class="modal-title">Specialization Information</h5>
                 <button
                   type="button"
                   class="btn-close"
@@ -155,16 +177,13 @@ if (!$M_ID) {
               </div>
               <div class="modal-body">
 
-                <form method="POST" action="./Appointmentes.php" enctype="multipart/form-data">
-
-                <input type="hidden" name="appointment_id" id="appointment_id">
-
+                <form method="POST" action="./Speclizations.php" enctype="multipart/form-data">
                   <div class="row mb-3">
                     <label for="inputText" class="col-sm-4 col-form-label"
-                      >Price</label
+                      >Specialization Name</label
                     >
                     <div class="col-sm-8">
-                      <input type="number" name="price" class="form-control" />
+                      <input type="text" name="name" class="form-control" />
                     </div>
                   </div>
 
@@ -193,10 +212,6 @@ if (!$M_ID) {
           </div>
         </div>
 
-
-
-
-
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
@@ -206,73 +221,43 @@ if (!$M_ID) {
                   <thead>
                     <tr>
                       <th scope="col">ID</th>
-                      <th scope="col">User Name</th>
-                      <th scope="col">Date</th>
-                      <th scope="col">Time</th>
-                      <th scope="col">Price</th>
-                      <th scope="col">Status</th>
+                      <th scope="col">Speclization Name</th>
+                      <th scope="col">Created At</th>
                       <th scope="col">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-<?php
-$sql1 = mysqli_query($con, "SELECT * from appointmentes WHERE mechanic_id = '$M_ID' ORDER BY id DESC");
+                  <?php
+$sql1 = mysqli_query($con, "SELECT * from specliazations ORDER BY id DESC");
 
 while ($row1 = mysqli_fetch_array($sql1)) {
 
-    $appointment_id = $row1['id'];
-    $customer_id = $row1['customer_id'];
-    $date = $row1['date'];
-    $time = $row1['time'];
-    $status = $row1['status'];
-    $price = $row1['price'];
-
-    $sql2 = mysqli_query($con, "SELECT * from users WHERE id = '$customer_id'");
-    $row2 = mysqli_fetch_array($sql2);
-
-    $user_name = $row2['name'];
+    $speclization_id = $row1['id'];
+    $speclization_name = $row1['name'];
+    $active = $row1['active'];
+    $created_at = $row1['created_at'];
 
     ?>
                     <tr>
-                      <th scope="row"><?php echo $appointment_id ?></th>
-                      <td><?php echo $user_name ?></td>
-                      <td><?php echo $date ?></td>
-                      <td><?php echo $time ?></td>
-                      <td><?php
-
-    if ($price) {
-        echo $price . 'JDs';
-    }
-
-    ?> </td>
-                      <td><?php echo $status ?></td>
-
+                      <th scope="row"><?php echo $speclization_id ?></th>
+                      <td><?php echo $speclization_name ?></td>
+                      <td><?php echo $created_at ?></td>
                       <td>
+                        <a href="./Edit-Speclization.php?speclization_id=<?php echo $speclization_id ?>" class="btn btn-success"
+                          >Edit</a
+                        >
 
-                      <?php
-if ($status == 'PENDING') {?>
+                        <?php if ($active == 1) {?>
 
-                      <a href="./AcceptOrRejectAppointement.php?appointment_id=<?php echo $appointment_id ?>&&status=Accepted" class="btn btn-primary">Accept</a>
+<a href="./DeleteOrRestoreSpeclization.php?speclization_id=<?php echo $speclization_id ?>&&isActive=<?php echo 0 ?>" class="btn btn-danger">Delete</a>
 
-                      <a href="./AcceptOrRejectAppointement.php?appointment_id=<?php echo $appointment_id ?>&&status=Rejected" class="btn btn-danger">Reject</a>
-                      <?php } else if ($status == 'Accepted') {?>
+<?php } else {?>
 
-                        <!-- <a href="./AcceptOrRejectAppointement.php?appointment_id=<?php echo $appointment_id ?>&&status=Rejected" class="btn btn-primary">Add Price</a> -->
-                        <button
+  <a href="./DeleteOrRestoreSpeclization.php?speclization_id=<?php echo $speclization_id ?>&&isActive=<?php echo 1 ?>" class="btn btn-primary">Restore</a>
 
-                        type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#verticalycentered"
-            id="btn-<?php echo $appointment_id ?>"
-            onclick="onClick(event)"
+<?php }?>
 
-                        >Add Price</button>
-
-                        <?php }?>
                       </td>
-
-
                     </tr>
 <?php
 }?>
@@ -290,7 +275,7 @@ if ($status == 'PENDING') {?>
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
       <div class="copyright">
-        &copy; Copyright <strong><span>Auto Fix</span></strong
+        &copy; Copyright <strong><span>AutoFix</span></strong
         >. All Rights Reserved
       </div>
     </footer>
@@ -304,7 +289,7 @@ if ($status == 'PENDING') {?>
 
     <script>
     window.addEventListener('DOMContentLoaded', (event) => {
-     document.querySelector('#sidebar-nav .nav-item:nth-child(3) .nav-link').classList.remove('collapsed')
+     document.querySelector('#sidebar-nav .nav-item:nth-child(2) .nav-link').classList.remove('collapsed')
    });
 </script>
 
@@ -320,14 +305,5 @@ if ($status == 'PENDING') {?>
 
     <!-- Template Main JS File -->
     <script src="../assets/js/main.js"></script>
-
-
-    <script>
-
-      const onClick = (e) => {
-        document.getElementById('appointment_id').value = e.target.id.split('-')[1]
-      }
-    </script>
-
   </body>
 </html>

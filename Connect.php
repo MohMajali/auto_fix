@@ -1,7 +1,7 @@
 <?php
 // database connection config
 error_reporting(0);
-$db_name = "auto_fix";
+$db_name = "auto_fix_2024";
 $mysql_user = "root";
 $mysql_pass = "";
 $server_name = "localhost";

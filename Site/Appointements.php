@@ -71,7 +71,7 @@ if ($C_ID) {
                         <li class="active"><a href="Appointements.php">Appointements</a></li>
                         <li class=""><a href="Account.php">Account</a></li>
                         <?php } else {?>
-                          <li><a href="../Login.php">Login</a></li>
+                          <li><a href="../User_Login.php">Login</a></li>
 
                           <?php }?>
                         <li><a href="contact.php">Contact</a></li>
@@ -169,6 +169,7 @@ if ($C_ID) {
                       <th scope="col">Mechanic Name</th>
                       <th scope="col">Specialization</th>
                       <th scope="col">Date Time</th>
+                      <th scope="col">Price</th>
                       <th scope="col">Actions</th>
                         </tr>
                       </thead>
@@ -176,7 +177,7 @@ if ($C_ID) {
 
 
                       <?php
-$sql1 = mysqli_query($con, "SELECT * from appointmentes WHERE user_id = '$C_ID' ORDER BY id DESC");
+$sql1 = mysqli_query($con, "SELECT * from appointmentes WHERE customer_id = '$C_ID' ORDER BY id DESC");
 
 while ($row1 = mysqli_fetch_array($sql1)) {
 
@@ -184,17 +185,18 @@ while ($row1 = mysqli_fetch_array($sql1)) {
     $mechanic_id = $row1['mechanic_id'];
     $date = $row1['date'];
     $time = $row1['time'];
+    $price = $row1['price'];
 
-    $sql2 = mysqli_query($con, "SELECT * from mechanices WHERE id = '$mechanic_id'");
+    $sql2 = mysqli_query($con, "SELECT * from users WHERE id = '$mechanic_id'");
     $row2 = mysqli_fetch_array($sql2);
 
     $mechanic_name = $row2['name'];
-    $specialization_id = $row2['specialization_id'];
+    $specialization_id = $row2['specalization_id'];
 
-    $sql3 = mysqli_query($con, "SELECT * from specializations WHERE id = '$specialization_id'");
+    $sql3 = mysqli_query($con, "SELECT * from specliazations WHERE id = '$specialization_id'");
     $row3 = mysqli_fetch_array($sql3);
 
-    $specialization = $row3['specialization'];
+    $specialization = $row3['name'];
 
 
 
@@ -208,6 +210,14 @@ while ($row1 = mysqli_fetch_array($sql1)) {
                           <?php echo $specialization ?>
                           </td>
                           <td><span class="badge bg-label-primary me-1"><?php echo $date ?> - <?php echo $time ?></span></td>
+                          <td><span class="badge bg-label-primary me-1"><?php 
+                          
+                          if($price) {
+                            echo $price . 'JDs';
+                          }
+                          
+                          
+                          ?></span></td>
 
                           <td>
   <a href="./Add-Review.php?mechanic_id=<?php echo $mechanic_id ?>" class="btn btn-danger">Add Review</a>

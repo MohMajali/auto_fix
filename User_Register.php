@@ -7,7 +7,10 @@ if (isset($_POST['Submit'])) {
 
     $name = $_POST['name'];
     $password = $_POST['password'];
+    $phone = $_POST['phone'];
     $email = $_POST['email'];
+    $email = $_POST['email'];
+    $type = 'USER';
 
     $stmt0 = $con->prepare("SELECT id FROM users WHERE email = ?");
     $stmt0->bind_param("s", $email);
@@ -22,9 +25,9 @@ if (isset($_POST['Submit'])) {
 
     } else {
 
-        $stmt = $con->prepare("INSERT INTO users (name, password, email) VALUES (?, ?, ?) ");
+        $stmt = $con->prepare("INSERT INTO users (name, password, email, phone, type) VALUES (?, ?, ?, ?, ?) ");
 
-        $stmt->bind_param("sss", $name, $password, $email);
+        $stmt->bind_param("sssss", $name, $password, $email, $phone, $type);
 
         if ($stmt->execute()) {
 
@@ -140,6 +143,21 @@ if (isset($_POST['Submit'])) {
                           <input
                             type="email"
                             name="email"
+                            class="form-control"
+                            id="email"
+                            required
+                          />
+
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <label for="email" class="form-label">Phone</label>
+                        <div class="input-group has-validation">
+
+                          <input
+                            type="text"
+                            name="phone"
                             class="form-control"
                             id="email"
                             required

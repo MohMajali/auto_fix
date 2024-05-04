@@ -14,24 +14,26 @@ if ($C_ID) {
     $name = $row1['name'];
     $email = $row1['email'];
 
-    $sql2 = mysqli_query($con, "select * from mechanices where id='$mechanic_id'");
+    $sql2 = mysqli_query($con, "select * from users where id='$mechanic_id'");
     $row2 = mysqli_fetch_array($sql2);
 
     $mechanic_name = $row2['name'];
     $mechanic_email = $row2['email'];
+    $specalization_id = $row2['specalization_id'];
 
     if (isset($_POST['Submit'])) {
 
         $mechanic_id = $_POST['mechanic_id'];
         $C_ID = $_POST['C_ID'];
+        $specalization_id = $_POST['specalization_id'];
         $start_date = $_POST['start_date'];
         $end_time = $_POST['end_time'];
 
 
-        $stmt = $con->prepare("INSERT INTO appointmentes (user_id, mechanic_id, date, time) 
-        VALUES (?, ?, ?, ?) ");
+        $stmt = $con->prepare("INSERT INTO appointmentes (specialization_id, mechanic_id, customer_id, date, time) 
+        VALUES (?, ?, ?, ?, ?) ");
 
-        $stmt->bind_param("iiss", $C_ID, $mechanic_id, $start_date, $end_time);
+        $stmt->bind_param("iiiss", $specalization_id, $mechanic_id, $C_ID, $start_date, $end_time);
 
         if ($stmt->execute()) {
 
@@ -103,7 +105,7 @@ if ($C_ID) {
                         <li class=""><a href="Appointements.php">Appointements</a></li>
                         <li class=""><a href="Account.php">Account</a></li>
                         <?php } else {?>
-                          <li><a href="../Login.php">Login</a></li>
+                          <li><a href="../User_Login.php">Login</a></li>
 
                           <?php }?>
                         <li class=""><a href="contact.php">Contact</a></li>
@@ -148,7 +150,7 @@ if ($C_ID) {
       <div class="container">
         <div class="row site-hero-inner justify-content-center align-items-center">
           <div class="col-md-10 text-center">
-            <h1 class="heading" data-aos="fade-up"><?php echo $photographer_name ?></h1>
+            <h1 class="heading" data-aos="fade-up"><?php echo $mechanic_name ?></h1>
             <!-- <p class="sub-heading mb-5" data-aos="fade-up" data-aos-delay="100">Enjoy your stay.</p> -->
           </div>
         </div>
@@ -195,6 +197,7 @@ if ($C_ID) {
 
                     <input type="hidden" name="mechanic_id" value="<?php echo $mechanic_id ?>">
                     <input type="hidden" name="C_ID" value="<?php echo $C_ID ?>">
+                    <input type="hidden" name="specalization_id" value="<?php echo $specalization_id ?>">
 
 
                       <div class="col-12 mb-2">

@@ -71,7 +71,7 @@ if ($C_ID) {
                         <li class=""><a href="Appointements.php">Appointements</a></li>
                         <li class=""><a href="Account.php">Account</a></li>
                         <?php } else {?>
-                          <li><a href="../Login.php">Login</a></li>
+                          <li><a href="../User_Login.php">Login</a></li>
 
                           <?php }?>
                         <li class="active"><a href="contact.php">Contact</a></li>

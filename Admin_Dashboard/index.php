@@ -3,17 +3,17 @@ session_start();
 
 include "../Connect.php";
 
-$M_ID = $_SESSION['M_Log'];
+$A_ID = $_SESSION['A_Log'];
 
-if (!$M_ID) {
+if (!$A_ID) {
 
     echo '<script language="JavaScript">
-     document.location="../Mechanic_Login.php";
+     document.location="../Admin_Login.php";
     </script>';
 
 } else {
 
-    $sql1 = mysqli_query($con, "select * from users where id='$M_ID'");
+    $sql1 = mysqli_query($con, "select * from users where id='$A_ID'");
     $row1 = mysqli_fetch_array($sql1);
 
     $name = $row1['name'];
@@ -28,7 +28,7 @@ if (!$M_ID) {
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>Reviews - Auto Fix</title>
+    <title>Dashboard - Auto Fix</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
 
@@ -72,7 +72,6 @@ if (!$M_ID) {
         </a>
       </div>
       <!-- End Logo -->
-      <!-- End Search Bar -->
 
       <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
@@ -110,112 +109,60 @@ if (!$M_ID) {
           <!-- End Profile Nav -->
         </ul>
       </nav>
-      <!-- End Icons Navigation -->
     </header>
     <!-- End Header -->
 
     <!-- ======= Sidebar ======= -->
-    <?php require './Aside-Nav/Aside.php'?>
+      <?php require './Aside-Nav/Aside.php'?>
     <!-- End Sidebar-->
 
     <main id="main" class="main">
       <div class="pagetitle">
-        <h1>Reviews</h1>
+        <h1>Dashboard</h1>
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item">Reviews</li>
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
           </ol>
         </nav>
       </div>
       <!-- End Page Title -->
-      <section class="section">
-
-
-      <div class="modal fade" id="verticalycentered" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Contact Message</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-
-                <form method="POST" action="./Categories.php" enctype="multipart/form-data">
-
-
-                  <div class="row mb-3">
-
-                    <div class="col-sm-12">
-                      <!-- <input type="file" name="file" class="form-control" required/> -->
-                      <textarea id="text-area-contact" name="" class="form-control" id="" cols="30" rows="10"></textarea>
-                    </div>
-                  </div>
-
-
-                </form>
-
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <section class="section faq">
         <div class="row">
           <div class="col-lg-12">
-            <div class="card">
+            <div class="card basic">
               <div class="card-body">
-                <!-- Table with stripped rows -->
-                <table class="table datatable">
-                  <thead>
-                    <tr>
-                      <th scope="col">ID</th>
-                      <th scope="col">User Name</th>
-                      <th scope="col">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  <?php
-$sql1 = mysqli_query($con, "SELECT * from reviewes WHERE mechanic_id = '$M_ID' ORDER BY id DESC");
+                <h5 class="card-title">Basic Questions</h5>
 
-while ($row1 = mysqli_fetch_array($sql1)) {
+                <div>
+                  <h6>
+                    1. Nisi ut ut exercitationem voluptatem esse sunt rerum?
+                  </h6>
+                  <p>
+                    Saepe perspiciatis ea. Incidunt blanditiis enim mollitia qui
+                    voluptates. Id rem nulla tenetur nihil in unde rerum. Quae
+                    consequatur placeat qui cumque earum eius omnis quos.
+                  </p>
+                </div>
 
-    $review_id = $row1['id'];
-    $customer_id = $row1['customer_id'];
-    $review = $row1['review'];
+                <div class="pt-2">
+                  <h6>2. Reiciendis dolores repudiandae?</h6>
+                  <p>
+                    Id ipsam non ut. Placeat doloremque deserunt quia tenetur
+                    inventore laboriosam dolores totam odio. Aperiam incidunt
+                    et. Totam ut quos sunt atque modi molestiae dolorem.
+                  </p>
+                </div>
 
-    $sql2 = mysqli_query($con, "SELECT * from users WHERE id = '$customer_id'");
-    $row2 = mysqli_fetch_array($sql2);
-
-    $user_name = $row2['name'];
-
-    ?>
-                    <tr>
-                      <th scope="row"><?php echo $review_id ?></th>
-                      <td><?php echo $user_name ?></td>
-                      <td>
-                      <button onclick="onClick(event)" type="button" id="button-<?php echo $review ?>" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#verticalycentered">View Comment</button>
-
-                      </td>
-                    </tr>
-<?php
-}?>
-                  </tbody>
-                </table>
-                <!-- End Table with stripped rows -->
+                <div class="pt-2">
+                  <h6>
+                    3. Qui qui reprehenderit ut est illo numquam voluptatem?
+                  </h6>
+                  <p>
+                    Enim inventore in consequuntur ipsam voluptatem consequatur
+                    beatae. Nostrum consequuntur voluptates et blanditiis.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -241,7 +188,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
 
     <script>
     window.addEventListener('DOMContentLoaded', (event) => {
-     document.querySelector('#sidebar-nav .nav-item:nth-child(2) .nav-link').classList.remove('collapsed')
+     document.querySelector('#sidebar-nav .nav-item:nth-child(1) .nav-link').classList.remove('collapsed')
    });
 </script>
 
@@ -254,12 +201,6 @@ while ($row1 = mysqli_fetch_array($sql1)) {
     <script src="../assets/vendor/simple-datatables/simple-datatables.js"></script>
     <script src="../assets/vendor/tinymce/tinymce.min.js"></script>
     <script src="../assets/vendor/php-email-form/validate.js"></script>
-
-    <script>
-              const onClick = (e) => {
-            document.getElementById('text-area-contact').value = e.target.id.split('-')[1]
-        }
-    </script>
 
     <!-- Template Main JS File -->
     <script src="../assets/js/main.js"></script>

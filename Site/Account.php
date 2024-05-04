@@ -19,11 +19,12 @@ if ($C_ID) {
         $C_ID = $_POST['C_ID'];
         $name = $_POST['name'];
         $email = $_POST['email'];
+        $phone = $_POST['phone'];
         $password = $_POST['password'];
 
-        $stmt = $con->prepare("UPDATE users SET name = ?, email = ?, password = ? WHERE id = ? ");
+        $stmt = $con->prepare("UPDATE users SET name = ?, email = ?, password = ?, phone = ? WHERE id = ? ");
 
-        $stmt->bind_param("sssi", $name, $email, $password, $C_ID);
+        $stmt->bind_param("ssssi", $name, $email, $password, $phone, $C_ID);
 
         if ($stmt->execute()) {
 
@@ -95,7 +96,7 @@ if ($C_ID) {
                         <li><a href="Appointements.php">Appointements</a></li>
                         <li class="active"><a href="Account.php">Account</a></li>
                         <?php } else {?>
-                          <li><a href="../Login.php">Login</a></li>
+                          <li><a href="../User_Login.php">Login</a></li>
 
                           <?php }?>
                         <li><a href="contact.php">Contact</a></li>
@@ -213,6 +214,21 @@ if ($C_ID) {
                           class="form-control"
                           id="yourEmail"
                           value="<?php echo $email ?>"
+                          required
+                        />
+
+                      </div>
+
+                      <div class="col-12 mb-2">
+                        <label for="yourEmail" class="form-label"
+                          >Phone</label
+                        >
+                        <input
+                          type="text"
+                          name="phone"
+                          class="form-control"
+                          id="yourEmail"
+                          value="<?php echo $phone ?>"
                           required
                         />
 

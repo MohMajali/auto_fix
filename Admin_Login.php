@@ -5,6 +5,7 @@ include "./Connect.php";
 
 if (isset($_POST['Submit'])) {
 
+
     $email = $_POST['email'];
     $Password = $_POST['password'];
 
@@ -14,11 +15,11 @@ if (isset($_POST['Submit'])) {
 
         $row = mysqli_fetch_array($query);
 
-        $M_ID = $row['id'];
-        $_SESSION['M_Log'] = $M_ID;
+        $A_ID = $row['id'];
+        $_SESSION['A_Log'] = $A_ID;
 
         echo '<script language="JavaScript">
-        document.location="Mechanic_Dashboard/";
+        document.location="./Admin_Dashboard/";
         </script>';
 
     } else {
@@ -105,9 +106,9 @@ if (isset($_POST['Submit'])) {
                       </p>
                     </div>
 
-                    <form class="row g-3 needs-validation" method="POST" action="./Mechanic_Login.php" id="login-form" novalidate>
+                    <form class="row g-3 needs-validation" method="POST" action="./Admin_Login.php" id="login-form" novalidate>
                       <div class="col-12">
-                        <label for="name" class="form-label">Email</label>
+                        <label for="name" class="form-label">Name</label>
                         <div class="input-group has-validation">
 
                           <input
@@ -158,12 +159,7 @@ if (isset($_POST['Submit'])) {
                           Login
                         </button>
                       </div>
-                      <div class="col-12">
-                        <p class="small mb-0">
-                          Don't have account?
-                          <a href="./Mechanic_Register.php">Create an account</a>
-                        </p>
-                      </div>
+                  
                     </form>
                   </div>
                 </div>

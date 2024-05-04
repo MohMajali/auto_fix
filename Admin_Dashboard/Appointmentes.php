@@ -3,9 +3,9 @@ session_start();
 
 include "../Connect.php";
 
-$M_ID = $_SESSION['M_Log'];
+$A_ID = $_SESSION['A_Log'];
 
-if (!$M_ID) {
+if (!$A_ID) {
 
     echo '<script language="JavaScript">
      document.location="../Mechanic_Login.php";
@@ -13,32 +13,10 @@ if (!$M_ID) {
 
 } else {
 
-    $sql1 = mysqli_query($con, "select * from users where id='$M_ID'");
+    $sql1 = mysqli_query($con, "select * from users where id='$A_ID'");
     $row1 = mysqli_fetch_array($sql1);
 
     $name = $row1['name'];
-
-    if (isset($_POST['Submit'])) {
-
-        $app_id = $_POST['appointment_id'];
-        $price = $_POST['price'];
-
-        $stmt = $con->prepare("UPDATE appointmentes SET price = ? WHERE id = ?");
-
-        $stmt->bind_param("di", $price, $app_id);
-
-        if ($stmt->execute()) {
-
-            echo "<script language='JavaScript'>
-              alert ('Price Updated Successfully !');
-         </script>";
-
-            echo "<script language='JavaScript'>
-        document.location='./Appointmentes.php';
-           </script>";
-
-        }
-    }
 }
 ?>
 
@@ -139,64 +117,6 @@ if (!$M_ID) {
 
 
 
-
-
-      <div class="modal fade" id="verticalycentered" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Price</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-
-                <form method="POST" action="./Appointmentes.php" enctype="multipart/form-data">
-
-                <input type="hidden" name="appointment_id" id="appointment_id">
-
-                  <div class="row mb-3">
-                    <label for="inputText" class="col-sm-4 col-form-label"
-                      >Price</label
-                    >
-                    <div class="col-sm-8">
-                      <input type="number" name="price" class="form-control" />
-                    </div>
-                  </div>
-
-
-
-                  <div class="row mb-3">
-                    <div class="text-end">
-                      <button type="submit" name="Submit" class="btn btn-primary">
-                        Submit
-                      </button>
-                    </div>
-                  </div>
-                </form>
-
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-
-
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
@@ -206,25 +126,25 @@ if (!$M_ID) {
                   <thead>
                     <tr>
                       <th scope="col">ID</th>
+                      <th scope="col">Specliazation</th>
+                      <th scope="col">Mechanic Name</th>
                       <th scope="col">User Name</th>
                       <th scope="col">Date</th>
                       <th scope="col">Time</th>
-                      <th scope="col">Price</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
 <?php
-$sql1 = mysqli_query($con, "SELECT * from appointmentes WHERE mechanic_id = '$M_ID' ORDER BY id DESC");
+$sql1 = mysqli_query($con, "SELECT * from appointmentes ORDER BY id DESC");
 
 while ($row1 = mysqli_fetch_array($sql1)) {
 
     $appointment_id = $row1['id'];
     $customer_id = $row1['customer_id'];
+    $mechanic_id = $row1['mechanic_id'];
+    $specialization_id = $row1['specialization_id'];
     $date = $row1['date'];
     $time = $row1['time'];
-    $status = $row1['status'];
     $price = $row1['price'];
 
     $sql2 = mysqli_query($con, "SELECT * from users WHERE id = '$customer_id'");
@@ -232,45 +152,26 @@ while ($row1 = mysqli_fetch_array($sql1)) {
 
     $user_name = $row2['name'];
 
+    $sql3 = mysqli_query($con, "SELECT * from users WHERE id = '$mechanic_id'");
+    $row3 = mysqli_fetch_array($sql3);
+
+    $mechanic_name = $row3['name'];
+
+    $sql4 = mysqli_query($con, "SELECT * from specliazations WHERE id = '$specialization_id'");
+    $row4 = mysqli_fetch_array($sql4);
+
+    $specliazation = $row4['name'];
+
     ?>
                     <tr>
                       <th scope="row"><?php echo $appointment_id ?></th>
+                      <td><?php echo $specliazation ?></td>
+                      <td><?php echo $mechanic_name ?></td>
                       <td><?php echo $user_name ?></td>
                       <td><?php echo $date ?></td>
                       <td><?php echo $time ?></td>
-                      <td><?php
+                      <td><?php echo $price ?> JDs</td>
 
-    if ($price) {
-        echo $price . 'JDs';
-    }
-
-    ?> </td>
-                      <td><?php echo $status ?></td>
-
-                      <td>
-
-                      <?php
-if ($status == 'PENDING') {?>
-
-                      <a href="./AcceptOrRejectAppointement.php?appointment_id=<?php echo $appointment_id ?>&&status=Accepted" class="btn btn-primary">Accept</a>
-
-                      <a href="./AcceptOrRejectAppointement.php?appointment_id=<?php echo $appointment_id ?>&&status=Rejected" class="btn btn-danger">Reject</a>
-                      <?php } else if ($status == 'Accepted') {?>
-
-                        <!-- <a href="./AcceptOrRejectAppointement.php?appointment_id=<?php echo $appointment_id ?>&&status=Rejected" class="btn btn-primary">Add Price</a> -->
-                        <button
-
-                        type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#verticalycentered"
-            id="btn-<?php echo $appointment_id ?>"
-            onclick="onClick(event)"
-
-                        >Add Price</button>
-
-                        <?php }?>
-                      </td>
 
 
                     </tr>
@@ -304,7 +205,7 @@ if ($status == 'PENDING') {?>
 
     <script>
     window.addEventListener('DOMContentLoaded', (event) => {
-     document.querySelector('#sidebar-nav .nav-item:nth-child(3) .nav-link').classList.remove('collapsed')
+     document.querySelector('#sidebar-nav .nav-item:nth-child(4) .nav-link').classList.remove('collapsed')
    });
 </script>
 
@@ -320,14 +221,6 @@ if ($status == 'PENDING') {?>
 
     <!-- Template Main JS File -->
     <script src="../assets/js/main.js"></script>
-
-
-    <script>
-
-      const onClick = (e) => {
-        document.getElementById('appointment_id').value = e.target.id.split('-')[1]
-      }
-    </script>
 
   </body>
 </html>

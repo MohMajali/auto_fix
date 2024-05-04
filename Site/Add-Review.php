@@ -19,23 +19,61 @@ if ($C_ID) {
         $mechanic_id = $_POST['mechanic_id'];
         $C_ID = $_POST['C_ID'];
         $rate = $_POST['rate'];
-        $comment = $_POST['comment'];
 
-        $stmt = $con->prepare("INSERT INTO reviewes (user_id, mechanic_id, rating, comment) VALUES (?, ?, ?, ?) ");
+/* */
 
-        $stmt->bind_param("iids", $C_ID, $mechanic_id, $rate, $comment);
+        $sql5 = mysqli_query($con, "select * from mechanices_customers_ratings where customer_id='$C_ID' AND mechanic_id='$mechanic_id'");
 
-        if ($stmt->execute()) {
-
-            echo "<script language='JavaScript'>
-            alert ('Thank You For Giving Review !');
-       </script>";
+        if (mysqli_num_rows($sql5) > 0) {
 
             echo "<script language='JavaScript'>
-      document.location='./Appointements.php';
-         </script>";
+			  alert ('Sorry .. You Already Rate This Mechanic Before !');
+      </script>";
+
+            echo '<script language="JavaScript">
+ document.location="Appointements.php";
+</script>';
+
+        } else {
+
+            $sql3 = mysqli_query($con, "select * from users where id='$mechanic_id'");
+            $row3 = mysqli_fetch_array($sql3);
+            $Total_Rating = $row3['total_rate'];
+
+            $New_Total_Rating = $Total_Rating + $rate;
+
+            mysqli_query($con, "insert into mechanices_customers_ratings (customer_id, mechanic_id, rate) values ('$C_ID','$mechanic_id','$rate')");
+
+  
+            $sql3 = mysqli_query($con, "select * from mechanices_customers_ratings where mechanic_id= '$mechanic_id'");
+            $num3 = mysqli_num_rows($sql3);
+            $TR = $New_Total_Rating / $num3;
+
+
+
+            mysqli_query($con, "update users set total_rate = '$TR' where id ='$mechanic_id'");
+
+
+            $comment = $_POST['comment'];
+
+            $stmt = $con->prepare("INSERT INTO reviewes (mechanic_id, customer_id, review) VALUES (?, ?, ?) ");
+
+            $stmt->bind_param("iis", $mechanic_id, $C_ID, $comment);
+
+            if ($stmt->execute()) {
+
+                echo "<script language='JavaScript'>
+        alert ('Thank You For Giving Review !');
+   </script>";
+
+                echo "<script language='JavaScript'>
+  document.location='./Appointements.php';
+     </script>";
+
+            }
 
         }
+
     }
 }
 
@@ -99,7 +137,7 @@ if ($C_ID) {
                         <li class="active"><a href="Appointements.php">Appointements</a></li>
                         <li class=""><a href="Account.php">Account</a></li>
                         <?php } else {?>
-                          <li><a href="../Login.php">Login</a></li>
+                          <li><a href="../User_Login.php">Login</a></li>
 
                           <?php }?>
                         <li><a href="contact.php">Contact</a></li>
