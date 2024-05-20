@@ -8,7 +8,7 @@ $M_ID = $_SESSION['M_Log'];
 if (!$M_ID) {
 
     echo '<script language="JavaScript">
-     document.location="../Admin_Login.php";
+     document.location="../Mechanic_Login.php";
     </script>';
 
 } else {

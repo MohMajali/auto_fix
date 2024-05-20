@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 04, 2024 at 09:05 PM
+-- Generation Time: May 21, 2024 at 12:11 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,7 +44,8 @@ CREATE TABLE `appointmentes` (
 --
 
 INSERT INTO `appointmentes` (`id`, `specialization_id`, `mechanic_id`, `customer_id`, `date`, `time`, `price`, `status`, `created_at`) VALUES
-(1, 1, 2, 3, '2024-05-17', '14:34', 1222, 'Accepted', '2024-05-04 21:35:32');
+(1, 1, 2, 3, '2024-05-17', '14:34', 1222, 'Accepted', '2024-05-04 21:35:32'),
+(2, 2, 4, 3, '2024-05-15', '21:57', 10, 'Accepted', '2024-05-05 19:57:17');
 
 -- --------------------------------------------------------
 
@@ -64,7 +65,9 @@ CREATE TABLE `locations` (
 
 INSERT INTO `locations` (`id`, `name`, `created_at`) VALUES
 (1, 'Amman', '2024-05-04 20:43:02'),
-(2, 'Irbid', '2024-05-04 20:43:02');
+(2, 'Irbid', '2024-05-04 20:43:02'),
+(3, 'Alaqaba', '2024-05-05 19:55:37'),
+(4, 'Alzarqa', '2024-05-05 19:55:37');
 
 -- --------------------------------------------------------
 
@@ -84,7 +87,8 @@ CREATE TABLE `mechanices_customers_ratings` (
 --
 
 INSERT INTO `mechanices_customers_ratings` (`id`, `customer_id`, `mechanic_id`, `rate`) VALUES
-(6, 3, 2, 5);
+(6, 3, 2, 5),
+(7, 3, 4, 4);
 
 -- --------------------------------------------------------
 
@@ -105,7 +109,8 @@ CREATE TABLE `reviewes` (
 --
 
 INSERT INTO `reviewes` (`id`, `mechanic_id`, `customer_id`, `review`, `created_at`) VALUES
-(1, 2, 3, 'lorem lorem lorem lorem lorem lorem lorem', '2024-05-04 22:04:54');
+(1, 2, 3, 'lorem lorem lorem lorem lorem lorem lorem', '2024-05-04 22:04:54'),
+(2, 4, 3, 'lorem 0lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem ', '2024-05-05 19:59:51');
 
 -- --------------------------------------------------------
 
@@ -125,7 +130,8 @@ CREATE TABLE `specliazations` (
 --
 
 INSERT INTO `specliazations` (`id`, `name`, `active`, `created_at`) VALUES
-(1, 'Test 12222', 1, '2024-05-04 20:53:49');
+(1, 'ميكانيكي', 1, '2024-05-04 20:53:49'),
+(2, 'كهرابا', 1, '2024-05-05 19:44:48');
 
 -- --------------------------------------------------------
 
@@ -153,8 +159,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `specalization_id`, `location_id`, `type`, `name`, `email`, `phone`, `password`, `total_rate`, `active`, `created_at`) VALUES
 (1, NULL, NULL, 'ADMIN', 'Admin', 'admin@yahoo.com', '7412589630', '1234567890', 0, 1, '2024-05-04 20:37:33'),
-(2, 1, 1, 'MICHANIC', 'Mechanic 1', 'mechanic@yahoo.com', '9876543210', 'Ab@12345', 5, 1, '2024-05-04 21:07:03'),
-(3, NULL, NULL, 'USER', 'User1111', 'user@yahoo.com', '8523697410', '1234567890', 0, 1, '2024-05-04 21:29:35');
+(2, 1, 1, 'MICHANIC', 'Mechanic 1', 'mechanic@yahoo.com', '9876543210', 'Ab@12345', 2, 1, '2024-05-04 21:07:03'),
+(3, NULL, NULL, 'USER', 'Khaled', 'user@yahoo.com', '8523697410', '1234567890', 0, 1, '2024-05-04 21:29:35'),
+(4, 2, 4, 'MICHANIC', 'Mohammad', 'mechanic2@yahoo.com', '741325960', '1234567890', 4, 1, '2024-05-05 19:48:17');
 
 --
 -- Indexes for dumped tables
@@ -211,37 +218,37 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `appointmentes`
 --
 ALTER TABLE `appointmentes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `mechanices_customers_ratings`
 --
 ALTER TABLE `mechanices_customers_ratings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `reviewes`
 --
 ALTER TABLE `reviewes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `specliazations`
 --
 ALTER TABLE `specliazations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables

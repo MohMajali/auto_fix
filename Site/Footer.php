@@ -7,7 +7,7 @@
               <li><a href="#">Terms &amp; Conditions</a></li>
               <li><a href="#">Privacy Policy</a></li>
               <li><a href="#">Help</a></li>
-             <li><a href="./Photographers.php">Rooms</a></li>
+             <li><a href="./Mechanices.php">Mechanics</a></li>
             </ul>
           </div>
 

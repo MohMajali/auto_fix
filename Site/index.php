@@ -118,7 +118,7 @@ if ($C_ID) {
         <div class="row site-hero-inner justify-content-center align-items-center">
           <div class="col-md-10 text-center">
             <h1 class="heading" data-aos="fade-up">Welcome to <em>Frame</em>Me</h1>
-            <p class="sub-heading mb-5" data-aos="fade-up" data-aos-delay="100">XXXXXX XXXXXX XXXXXX &amp; XXXXXXX.</p>
+            <p class="sub-heading mb-5" data-aos="fade-up" data-aos-delay="100">Autofix for you</p>
             <!-- <p data-aos="fade-up" data-aos-delay="100"><a href="#" class="btn uppercase btn-primary mr-md-2 mr-0 mb-3 d-sm-inline d-block">Explore The Beauty</a> <a href="#" class="btn uppercase btn-outline-light d-sm-inline d-block">Download</a></p> -->
           </div>
         </div>
@@ -131,7 +131,7 @@ if ($C_ID) {
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <h2 class="heading" data-aos="fade-right">Our Photographers</h2>
+            <h2 class="heading" data-aos="fade-right">Our Mechanics</h2>
           </div>
         </div>
         <div class="row">
@@ -172,7 +172,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
         <div class="row justify-content-center text-center mb-5">
           <div class="col-md-8">
             <h2 class="heading" data-aos="fade-up">Specializations</h2>
-            <p class="lead" data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. In dolor, iusto doloremque quo odio repudiandae sunt eveniet? Enim facilis laborum voluptate id porro, culpa maiores quis, blanditiis laboriosam alias. Sed.</p>
+            <p class="lead" data-aos="fade-up">dwdwd</p>
           </div>
         </div>
         <div class="row">

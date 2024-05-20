@@ -4,7 +4,8 @@ session_start();
 include "../Connect.php";
 
 $C_ID = $_SESSION['U_Log'];
-$specialization_id = $_GET['specialization_id'];
+
+$response = array();
 
 if ($C_ID) {
 
@@ -14,6 +15,50 @@ if ($C_ID) {
     $name = $row1['name'];
     $email = $row1['email'];
 
+}
+
+if (isset($_GET['specialization_id'])) {
+
+  $specialization_id = $_GET['specialization_id'];
+
+    $sql1 = mysqli_query($con, "SELECT * from users WHERE type = 'MICHANIC' AND specalization_id = '$specialization_id' ORDER BY id DESC");
+
+    while ($row1 = mysqli_fetch_array($sql1)) {
+
+        $response[] = $row1;
+    }
+} else if (isset($_POST['filter'])) {
+
+    $rate = $_POST['rate'];
+    $location_id = $_POST['location_id'];
+
+    if ($rate) {
+
+        $sql1 = mysqli_query($con, "SELECT * from users WHERE type = 'MICHANIC' AND total_rate >= '$rate' ORDER BY id DESC");
+
+        while ($row1 = mysqli_fetch_array($sql1)) {
+
+            $response[] = $row1;
+        }
+
+    } else if ($location_id) {
+
+        $sql1 = mysqli_query($con, "SELECT * from users WHERE type = 'MICHANIC' AND location_id = '$location_id' ORDER BY id DESC");
+
+        while ($row1 = mysqli_fetch_array($sql1)) {
+
+            $response[] = $row1;
+        }
+
+    }
+} else {
+
+    $sql1 = mysqli_query($con, "SELECT * from users WHERE type = 'MICHANIC' ORDER BY id DESC");
+
+    while ($row1 = mysqli_fetch_array($sql1)) {
+
+        $response[] = $row1;
+    }
 }
 
 ?>
@@ -134,38 +179,88 @@ if ($C_ID) {
       <div class="container">
         <div class="row justify-content-center text-center mb-5">
           <div class="col-md-8">
-            <h2 class="heading" data-aos="fade-up">Our Photographers</h2>
-            <p class="lead" data-aos="fade-up">Our Photographers are Good</p>
-          </div>
-        </div>
-        <div class="row">
-        <?php
+            <h2 class="heading" data-aos="fade-up">Our Mechanics</h2>
+            <p class="lead" data-aos="fade-up">Our Mechanics are Good</p>
+
+
+            <div class="">
+                        <form action="<?php
 
 if ($specialization_id) {
 
-    $sql1 = mysqli_query($con, "SELECT * from users WHERE type = 'MICHANIC' AND specialization_id = '$specialization_id' ORDER BY id DESC");
+    echo "./Mechanices.php?specialization_id=" . $specialization_id;
+
 } else {
-    $sql1 = mysqli_query($con, "SELECT * from users WHERE type = 'MICHANIC' ORDER BY id DESC");
+
+    echo "./Mechanices.php";
 
 }
 
+?>" method="post" class="row g-3">
+
+
+                        <div class="col-md-4">
+                          <select class="form-select" aria-label="Default select example" name="rate">
+                        <option disabled selected>Select Rate</option>
+
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                    </select>
+                          </div>
+
+                          <div class="col-md-6">
+                          <select class="form-select" aria-label="Default select example" name="location_id">
+                                    <option disabled selected>Select Location</option>
+                                    <?php
+
+$sql1 = mysqli_query($con, "SELECT * from locations ORDER BY id DESC");
+
 while ($row1 = mysqli_fetch_array($sql1)) {
-
-    $mechanic_id = $row1['id'];
-    $name = $row1['name'];
-
+    $location_id_select = $row1['id'];
+    $location_name_select = $row1['name'];
     ?>
-          <div class="col-lg-4 col-md-6 col-sm-6 col-12 post" data-aos="fade-up" data-aos-delay="100">
+                                      <option value="<?php echo $location_id_select ?>"><?php echo $location_name_select ?></option>
+                                    <?php
+}?>
+                    </select>
+                          </div>
+
+
+                    <div class="text-center col-md-2">
+                      <button type="submit" name="filter" class="btn btn-primary">
+                        Filter
+                      </button>
+                    </div>
+
+                        </form>
+                      </div>
+          </div>
+        </div>
+        <div class="row">
+
+
+
+<?php
+
+foreach ($response as $row) {?>
+
+
+<div class="col-lg-4 col-md-6 col-sm-6 col-12 post" data-aos="fade-up" data-aos-delay="100">
             <div class="media media-custom d-block mb-4">
-              <a href="./Make-Appointement.php?mechanic_id=<?php echo $mechanic_id ?>" class="mb-4 d-block"><img src="./img/mechanices.jpeg" alt="Image placeholder" class="img-fluid"></a>
+              <a href="./Make-Appointement.php?mechanic_id=<?php echo $row['id'] ?>" class="mb-4 d-block"><img src="./img/mechanices.jpeg" alt="Image placeholder" class="img-fluid"></a>
               <div class="media-body">
                 <!-- <span class="meta-post">February 26, 2018</span> -->
-                <h2 class="mt-0 mb-3"><a href="#"><?php echo $name ?></a></h2>
+                <h2 class="mt-0 mb-3"><a href="./Make-Appointement.php?mechanic_id=<?php echo $row['id'] ?>"><?php echo $row['name'] ?></a></h2>
               </div>
             </div>
           </div>
-          <?php
-}?>
+
+
+
+ <?php }?>
         </div>
       </div>
     </section>
